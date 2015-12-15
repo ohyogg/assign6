@@ -44,6 +44,11 @@ int time;
 int wait = 4000;
 
 
+Bullet[] bullet = new Bullet[5];
+int bulletCounter =0; 
+int bulletNum = 0;
+
+
 
 void setup () {
 	size(640, 480);
@@ -56,6 +61,7 @@ void setup () {
 
 void draw()
 {
+   
 	if (state == GameState.START) {
 		bg.draw();	
 	}
@@ -64,12 +70,20 @@ void draw()
 		treasure.draw();
 		flameMgr.draw();
 		fighter.draw();
+          for(int i =0; i <5;i++){
+            if(bullet[i] !=null){
+               bullet[i].draw();
+            }
+          }
+  
+           hpDisplay.updateWithFighterHP(fighter.hp);
 
 		//enemys
 		if(millis() - time >= wait){
 			addEnemy(currentType++);
 			currentType = currentType%4;
-		}		
+		}	
+          	
 
 		for (int i = 0; i < enemyCount; ++i) {
 			if (enemys[i]!= null) {
@@ -84,7 +98,28 @@ void draw()
 					enemys[i]=null;
 				}
 			}
-		}
+           	}
+           
+           //BulletIsCollideWithEnemy
+            for(int j = 0;j<8;j++)
+            {
+                for(int i =0;i<5;i++)
+                {
+                  if(bullet[i] !=null && enemys[j] !=null)
+                  {
+                    //println(bullet[0].x,bullet[1].x,bullet[2].x,bullet[3].x,bullet[4].x,bulletNum);
+                    if(enemys[j].x>bullet[i].x-35 &&enemys[j].x<bullet[i].x+35 && enemys[j].y>bullet[i].y-35 &&enemys[j].y<bullet[i].y+35)
+                    {
+                        flameMgr.addFlame(enemys[j].x, enemys[j].y);
+                        enemys[j] = null;
+                        bullet[i] = null;
+                        bulletNum--;
+                    }    
+                  }
+                }
+              
+            }
+           
 		// 這地方應該加入Fighter 血量顯示UI
 		
 	}
@@ -119,8 +154,10 @@ void keyReleased(){
     default :break ;
   }
   if (key == ' ') {
-  	if (state == GameState.PLAYING) {
+  	if (state == GameState.PLAYING &&bulletNum<5) {  
 		fighter.shoot();
+           bulletNum++;
+           
 	}
   }
   if (key == ENTER) {
@@ -132,8 +169,12 @@ void keyReleased(){
 		flameMgr = new FlameMgr();
 		treasure = new Treasure();
 		fighter = new Fighter(20);
+           bulletNum = 0;
       default : break ;
     }
   }
 }
 
+
+
+ 
