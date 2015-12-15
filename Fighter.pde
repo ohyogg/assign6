@@ -3,7 +3,7 @@ class Fighter{
 	int x = 0;
 	int y = 0;
 	int type;
-	int speed = 5;
+	int speed= 5;
 
 	int hp;
 	Fighter(int hp) {
@@ -32,6 +32,9 @@ class Fighter{
 	}
 
 	void shoot() {
+      bullet[bulletCounter] = new Bullet(this.x,this.y);
+      bulletCounter++;
+      bulletCounter %=5;
 		
 	}
 
