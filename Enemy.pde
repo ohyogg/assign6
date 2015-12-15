@@ -9,11 +9,23 @@ class Enemy{
 		this.x = x;
 		this.y = y;
 		this.type = type;
-		enemyImg = loadImage("img/enemy.png");
+           if(type == FlightType.ENEMYSTRONG)
+           {
+               enemyImg = loadImage("img/enemy2.png");
+           }else
+           {
+               enemyImg = loadImage("img/enemy.png");
+           }
 		
 	}
 	void move() {
-		this.x+= 5;	
+           if(this.type == FlightType.ENEMYSTRONG)
+           {
+               this.x+=5;
+           }else
+           {
+               this.x+=5;
+           }	
 	}
 
 	void draw()
@@ -23,12 +35,20 @@ class Enemy{
 
 	boolean isCollideWithFighter()
 	{
-		return false;
-	}
+      if(fighter.x>this.x-35 &&fighter.x<this.x+35 && fighter.y>this.y-35 &&fighter.y<this.y+35)
+      {
+        return true;
+      }        
+        return false;
+    }
 
 	boolean isOutOfBorder()
 	{
-		return false;
+      if(this.x >640)
+      {
+        return true;
+      }
+      return false;
 	}
 
 
